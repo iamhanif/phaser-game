@@ -114,6 +114,7 @@ const Game: React.FC = () => {
 
     update() {
       if (this.gameOver) {
+        // show the start button when game is over
         setGameStarted(false);
       }
 
@@ -183,8 +184,8 @@ const Game: React.FC = () => {
 
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      width: 720, // Math.min(720, width),
-      height: 1280, //Math.min(1280, height),
+      width: 720,
+      height: 1280,
       parent: "game-container",
       scene: GameScene,
       physics: { default: "arcade", arcade: { gravity: { y: 300 } } },
@@ -200,21 +201,16 @@ const Game: React.FC = () => {
       style={{
         position: "relative",
         maxWidth: "720px",
-        // width: height * (9 / 16),
         width: gameWidth,
         maxHeight: "1280px",
-        // aspectRatio: "9/16",
         height: gameHeight,
-        // height: "100%",
         margin: "0 auto",
         backgroundImage: `url(${sky})`,
-        // backgroundColor: "red",
       }}
     >
       <div
         id="game-container"
         style={{
-          height: width * (16 / 9),
           maxHeight: "1280px",
           height: gameHeight,
           width: gameWidth,
