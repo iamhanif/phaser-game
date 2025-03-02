@@ -12,6 +12,9 @@ const Game: React.FC = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const { width, height } = useResize();
 
+  const gameHeight = Math.min(1280, width * (16 / 9), height);
+  const gameWidth = Math.min(720, height * (9 / 16), width);
+
   class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Sprite;
     private stars!: Phaser.Physics.Arcade.Group;
@@ -193,10 +196,31 @@ const Game: React.FC = () => {
   }, [gameStarted, width, height]);
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <div
+      style={{
+        position: "relative",
+        maxWidth: "720px",
+        // width: height * (9 / 16),
+        width: gameWidth,
+        maxHeight: "1280px",
+        // aspectRatio: "9/16",
+        height: gameHeight,
+        // height: "100%",
+        margin: "0 auto",
+        backgroundImage: `url(${sky})`,
+        // backgroundColor: "red",
+      }}
+    >
       <div
         id="game-container"
-        style={{ position: "relative", width: width, height: height }}
+        style={{
+          height: width * (16 / 9),
+          maxHeight: "1280px",
+          height: gameHeight,
+          width: gameWidth,
+          maxWidth: "720px",
+          margin: "0 auto",
+        }}
       />
       {!gameStarted && (
         <button
