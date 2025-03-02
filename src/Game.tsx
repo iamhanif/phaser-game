@@ -12,6 +12,7 @@ const Game: React.FC = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const { width, height } = useResize();
 
+  // calculate the minimum width and height and maitain the aspest ratio 9:16
   const gameHeight = Math.min(1280, width * (16 / 9), height);
   const gameWidth = Math.min(720, height * (9 / 16), width);
 
@@ -43,17 +44,22 @@ const Game: React.FC = () => {
 
     create() {
       console.log("GameScene created");
+      // background for our game
+      // half of width is 360, half of height is 640, sky is the background image
       this.add.image(360, 640, "sky");
       this.platforms = this.physics.add.staticGroup();
+      // position of grounds. first one for x direction, second one is y
       this.platforms.create(360, 1248, "ground").setScale(2).refreshBody();
       this.platforms.create(560, 1080, "ground");
       this.platforms.create(45, 930, "ground");
       this.platforms.create(675, 900, "ground");
-
+      // player and its settings
       this.player = this.physics.add.sprite(100, 930, "dude");
+      // Player physics properties. for slight bounce.
       this.player.setBounce(0.2);
       this.player.setCollideWorldBounds(true);
 
+      // player animations, turning, walking left and walking right.
       this.anims.create({
         key: "left",
         frames: this.anims.generateFrameNumbers("dude", { start: 0, end: 3 }),
@@ -74,8 +80,9 @@ const Game: React.FC = () => {
         repeat: -1,
       });
 
+      // Input Events
       this.cursors = this.input.keyboard.createCursorKeys();
-
+      // Some stars to collect, 12 in total, evenly spaced 63 pixels apart along the x axis. [width-12/11 = 64... but used 63]
       this.stars = this.physics.add.group({
         key: "star",
         repeat: 11,
@@ -83,19 +90,24 @@ const Game: React.FC = () => {
       });
       this.stars.children.iterate((child) => {
         (child as Phaser.Physics.Arcade.Sprite).setBounceY(
+          // Give each star a slightly different bounce
           Phaser.Math.FloatBetween(0.4, 0.8)
         );
       });
 
       this.bombs = this.physics.add.group();
+      // score. starts with 0. text-color white
       this.scoreText = this.add.text(16, 36, "Score: 0", {
         fontSize: "32px",
         fill: "#fff",
       });
 
+      // Collide the player and the stars with the platforms
       this.physics.add.collider(this.player, this.platforms);
       this.physics.add.collider(this.stars, this.platforms);
       this.physics.add.collider(this.bombs, this.platforms);
+
+      // Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
       this.physics.add.overlap(
         this.player,
         this.stars,
@@ -139,10 +151,13 @@ const Game: React.FC = () => {
       star: Phaser.GameObjects.GameObject
     ) => {
       (star as Phaser.Physics.Arcade.Sprite).disableBody(true, true);
+
+      // Add and update the score
       this.score += 10;
       this.scoreText.setText(`Score: ${this.score}`);
 
       if (this.stars.countActive(true) === 0) {
+        // A new batch of stars to collect when 12 stars collected already
         this.stars.children.iterate((child) => {
           (child as Phaser.Physics.Arcade.Sprite).enableBody(
             true,
