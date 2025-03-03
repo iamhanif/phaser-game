@@ -1,4 +1,4 @@
-Instructions
+**Instructions**
 
 1. Click the Start Game button to begin playing.
 
