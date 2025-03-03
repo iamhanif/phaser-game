@@ -9,3 +9,5 @@ Instructions
 4. The score is displayed in the top-left corner of the screen.
 
 5. Collect all stars while avoiding bombs to progress in the game.
+
+6. If you collide with a bomb, the game will be over.
