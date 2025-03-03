@@ -13,8 +13,8 @@ const Game: React.FC = () => {
   const { width, height } = useResize();
 
   // calculate the minimum width and height and maitain the aspest ratio 9:16
-  const gameHeight = Math.min(1280, width * (16 / 9), height);
-  const gameWidth = Math.min(720, height * (9 / 16), width);
+  const gameHeight = Math.min( width * (16 / 9), height);
+  const gameWidth = Math.min( height * (9 / 16), width);
 
   class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Sprite;
@@ -215,21 +215,23 @@ const Game: React.FC = () => {
     <div
       style={{
         position: "relative",
-        maxWidth: "720px",
+        // maxWidth: "720px",
         width: gameWidth,
-        maxHeight: "1280px",
+        // maxHeight: "1280px",
         height: gameHeight,
         margin: "0 auto",
         backgroundImage: `url(${sky})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <div
         id="game-container"
         style={{
-          maxHeight: "1280px",
+          // maxHeight: "1280px",
           height: gameHeight,
           width: gameWidth,
-          maxWidth: "720px",
+          // maxWidth: "720px",
           margin: "0 auto",
         }}
       />
